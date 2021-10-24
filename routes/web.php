@@ -9,3 +9,4 @@ Route::get('/', function () {
 });
 
 Route::get('/articles', [ArticleController::class, 'index']);
+Route::post('/articles', [ArticleController::class, 'create']);

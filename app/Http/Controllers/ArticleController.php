@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Articles;
 use Illuminate\Http\Request;
+use DateTime;
 
 class ArticleController extends Controller
 {
@@ -23,7 +24,12 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        $article = new Articles();
+        $article->setAttribute('name', 'Test');
+        $article->setAttribute('short_desc', 'Short descrtiption');
+        $article->setAttribute('dateTest', new DateTime());
+
+        return $article->save();
     }
 
     /**
