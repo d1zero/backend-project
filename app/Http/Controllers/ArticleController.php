@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\Models\Articles;
 use Illuminate\Http\Request;
-use DateTime;
 
 class ArticleController extends Controller
 {
@@ -14,7 +13,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return view('articles');
+        $articles = Articles::all();
+        return view('articles.index', ['articles' => $articles]);
     }
 
     /**
@@ -24,13 +24,9 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $article = new Articles();
-        $article->setAttribute('name', 'Test');
-        $article->setAttribute('short_desc', 'Short descrtiption');
-        $article->setAttribute('dateTest', new DateTime());
-
-        return $article->save();
+        return view('articles.create');
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -40,7 +36,13 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $article = new Articles();
+        $article->name = request('name');
+        $article->short_desc = request('description');
+        $article->dateTest = request('date');
+
+        $article->save();
+        return redirect('articles');
     }
 
     /**
@@ -51,7 +53,8 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        //
+        $article = Articles::findOrFail($id);
+        return view('articles.view', ['article' => $article]);
     }
 
     /**
