@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\ArticleComment;
 use App\Models\Articles;
 use Illuminate\Http\Request;
 
@@ -13,7 +15,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Articles::all();
+        $articles = Articles::paginate(3);
         return view('articles.index', ['articles' => $articles]);
     }
 
@@ -54,7 +56,8 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article = Articles::findOrFail($id);
-        return view('articles.view', ['article' => $article]);
+        $comment = ArticleComment::where('article_id', $id)->paginate(3);
+        return view('articles.view', ['article' => $article, 'comments' => $comment]);
     }
 
     /**
