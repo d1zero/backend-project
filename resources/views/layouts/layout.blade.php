@@ -408,9 +408,12 @@
     <header>
         <a href="/">Главная</a>
         <a href="/articles">Новости</a>
+        @if (Auth::guest())
         <a href="/register">Регистрация</a>
         <a href="/login">Войти</a>
+        @else
         <a href="/logout">Выйти</a>
+        @endif
     </header>
     @yield('content')
 </body>

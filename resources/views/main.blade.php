@@ -3,9 +3,10 @@
 <div>
     <p>Главная</p>
 </div>
+@if (Auth::guest())
 <a href="/register">Регистрация</a>
 <a href="/login">Войти</a>
-<form action="/logout" method="post">
-    <button type="submit">Выйти</button>
-</form>
+@else
+<a href="/logout">Выйти</a>
+@endif
 @endsection
