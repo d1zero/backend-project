@@ -408,6 +408,9 @@
     <header>
         <a href="/">Главная</a>
         <a href="/articles">Новости</a>
+        <a href="/register">Регистрация</a>
+        <a href="/login">Войти</a>
+        <a href="/logout">Выйти</a>
     </header>
     @yield('content')
 </body>
