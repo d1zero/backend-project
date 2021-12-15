@@ -4,9 +4,16 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ArticleCommentController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/', function () {
     return view('index');
+});
+
+Route::get('/mail', function () {
+    $mail = new App\Mail\testMail('hello');
+    Mail::send($mail);
+    return view('mail');
 });
 
 Route::group(['prefix' => '/articles', 'middleware' => 'auth'], function () {

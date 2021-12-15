@@ -8,7 +8,7 @@
             <a href="/articles/{{$article->id}}" class="list-group-item list-group-item-acrtion">{{$article->name}}</a>
             @endforeach
             @can('create-article')
-            <a href="/articles/create" class="btn btn-primary" style='margin-top: 10px;'>Добавить статью</a>
+                <a href="/articles/create" class="btn btn-primary" style='margin-top: 10px;'>Добавить статью</a>
             @endcan
         </div>
     </div>

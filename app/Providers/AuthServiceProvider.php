@@ -28,6 +28,14 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::define('create-article', function (?User $user) {
+            $role = Role::where('name', 'reader')->value('id');
+            if ($user->role_id == $role) {
+                return Response::deny('Access denied');
+            }
+            return Response::allow();
+        });
+
         Gate::define('update-article', function (?User $user) {
             $role = Role::where('name', 'reader')->value('id');
             if ($user->role_id == $role) {

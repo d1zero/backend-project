@@ -4,22 +4,22 @@
 <p>{{$article->short_desc}}</p>
 <p>{{$article->dateTest}}</p>
 <br>
+
+{{ $comments->links()}}
+@canany('update-article', 'delete-article')
+<a href="/articles/{{$article->id}}/edit" class='btn'>Редактировать</a>
+<a href="/articles/{{$article->id}}/delete" class='btn'>Удалить</a>
+@endcan()
+<br>
+
+
 <form action="/articles/{{$article->id}}/add_comment" method="post">
     @csrf
-    <h3>Оставить комментарий</h3>
     <label for="title">Заголовок комментария</label><br>
     <input type="text" name="title" id="title" placeholder="Введите заголовок"><br>
     <textarea name="comment" id="" cols="30" rows="10" placeholder="Введите текст комментария"></textarea><br>
     <button type="submit">Отправить</button>
 </form>
-<br>
-
-{{ $comments->links()}}
-    @canany('update-article', 'delete-article')
-    <a href="/articles/{{$article->id}}/edit" class='btn'>Редактировать</a>
-    <a href="/articles/{{$article->id}}/delete" class='btn'>Удалить</a>
-    @endcan()
-
 
 <h3>Комментарии</h3>
 <div>
