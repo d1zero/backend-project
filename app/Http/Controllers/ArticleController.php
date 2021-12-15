@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ArticleComment;
 use App\Models\Articles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ArticleController extends Controller
 {
@@ -26,6 +27,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create');
         return view('articles.create');
     }
 
@@ -36,15 +38,16 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id = null)
     {
-        $article = new Articles();
-        $article->name = request('name');
-        $article->short_desc = request('description');
-        $article->dateTest = request('date');
-
-        $article->save();
-        return redirect('articles');
+        if ($id == null) $newArticle = new Articles();
+        else $newArticle = Articles::findOrFail($id);
+        $newArticle->name = request('name');
+        $newArticle->short_desc = request('description');
+        $newArticle->dateTest = request('date');
+        $newArticle->save();
+        if ($id == null) return redirect('/article');
+        else return redirect('/articles/' . $id);
     }
 
     /**
@@ -80,7 +83,8 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $article = Articles::findOrFail($id);
+        return view('articles.edit', ['article' => $article]);
     }
 
     /**
@@ -91,6 +95,7 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Articles::findOrFail($id)->delete();
+        return redirect('/articles');
     }
 }

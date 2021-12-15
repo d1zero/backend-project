@@ -13,6 +13,14 @@
     <button type="submit">Отправить</button>
 </form>
 <br>
+
+{{ $comments->links()}}
+    @canany('update-article', 'delete-article')
+    <a href="/articles/{{$article->id}}/edit" class='btn'>Редактировать</a>
+    <a href="/articles/{{$article->id}}/delete" class='btn'>Удалить</a>
+    @endcan()
+
+
 <h3>Комментарии</h3>
 <div>
     @foreach($comments as $comment)
