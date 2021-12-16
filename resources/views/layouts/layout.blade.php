@@ -406,12 +406,16 @@
 
 <body>
     <header>
-        <a href="/">Главная</a>
+        <a href="/" class="@active_link('/')">Главная</a>
         <a href="/articles">Новости</a>
         @if (Auth::guest())
         <a href="/register">Регистрация</a>
         <a href="/login">Войти</a>
         @else
+        @can('create-article')
+        <a href="/articles/create">Добавить статью</a>
+        <a href="/comments">Комментарии</a>
+        @endcan
         <a href="/logout">Выйти</a>
         @endif
     </header>

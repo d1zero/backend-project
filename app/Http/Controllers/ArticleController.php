@@ -59,8 +59,8 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article = Articles::findOrFail($id);
-        $comment = ArticleComment::where('article_id', $id)->paginate(3);
-        return view('articles.view', ['article' => $article, 'comments' => $comment]);
+        $comments = ArticleComment::where('article_id', $id)->where('accept', true)->paginate(3);
+        return view('articles.view', ['article' => $article, 'comments' => $comments]);
     }
 
     /**

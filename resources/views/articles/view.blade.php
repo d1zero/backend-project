@@ -6,6 +6,13 @@
 <br>
 
 {{ $comments->links()}}
+<br>
+@isset($_GET['result'])
+@if ($_GET['result']==true)
+Комментарий отправлен на модерацию
+@endif
+@endisset
+<br>
 @canany('update-article', 'delete-article')
 <a href="/articles/{{$article->id}}/edit" class='btn'>Редактировать</a>
 <a href="/articles/{{$article->id}}/delete" class='btn'>Удалить</a>
@@ -13,7 +20,7 @@
 <br>
 
 
-<form action="/articles/{{$article->id}}/add_comment" method="post">
+<form action="/comments/{{$article->id}}/add_comment" method="post">
     @csrf
     <label for="title">Заголовок комментария</label><br>
     <input type="text" name="title" id="title" placeholder="Введите заголовок"><br>
