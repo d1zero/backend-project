@@ -417,9 +417,18 @@
         <a href="/comments">Комментарии</a>
         @endcan
         <a href="/logout">Выйти</a>
+
+
+        <h1>{{auth()->user()->unreadNotifications()->count()}}</h1>
+        @foreach(auth()->user()->unreadNotifications as $notification)
+        <div class="alert alert-primary" role="alert">
+            {{$notification->data['article']['name']}}
+        </div>
+        @endforeach
         @endif
     </header>
     @yield('content')
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 
 </html>

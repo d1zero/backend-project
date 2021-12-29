@@ -36,6 +36,6 @@ class VeryLongJob implements ShouldQueue
     public function handle()
     {
         $testMail = new testMail("Создан новый комментарий к статье '".$this->article->name."'");
-        Mail::send($testMail);
+        return Mail::send($testMail);
     }
 }

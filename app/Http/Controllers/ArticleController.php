@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewArticleEvent;
 use App\Models\ArticleComment;
 use App\Models\Articles;
+use App\Models\User;
+use App\Notifications\NewArticleNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Cache;
 
 class ArticleController extends Controller
 {
@@ -16,7 +21,10 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Articles::paginate(3);
+        $currentPage = request()->get('page',1);
+        $articles = Cache::rememberForever('articles:' . $currentPage, function() {
+            return Articles::paginate(7);
+        });
         return view('articles.index', ['articles' => $articles]);
     }
 
@@ -27,7 +35,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        Gate::authorize('create');
+        $this->authorize('create', [self::class]);
         return view('articles.create');
     }
 
@@ -46,7 +54,12 @@ class ArticleController extends Controller
         $newArticle->short_desc = request('description');
         $newArticle->dateTest = request('date');
         $newArticle->save();
-        if ($id == null) return redirect('/article');
+        Cache::forget('articles:all');
+        $user = User::where('id', '!=', auth()->user()->id)->get();
+        Notification::send($user, new NewArticleNotification($newArticle));
+        event(new NewArticleEvent('asdasdas'));
+
+        if ($id == null) return redirect('/articles');
         else return redirect('/articles/' . $id);
     }
 
@@ -58,8 +71,12 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article = Articles::findOrFail($id);
-        $comments = ArticleComment::where('article_id', $id)->where('accept', true)->paginate(3);
+        $article = Cache::rememberForever('article:'.$id, function()use($id) {
+            return Articles::findOrFail($id);
+        });
+        $comments = Cache::rememberForever('article:comments:'.$id.'', function()use($id) {
+            return ArticleComment::where('article_id', $id)->where('accept', true)->paginate(3);
+        });
         return view('articles.view', ['article' => $article, 'comments' => $comments]);
     }
 
@@ -84,6 +101,8 @@ class ArticleController extends Controller
     public function update(Request $request, $id)
     {
         $article = Articles::findOrFail($id);
+        Cache::forget('articles:all');
+        Cache::forget('articles:'.$id);
         return view('articles.edit', ['article' => $article]);
     }
 
@@ -96,6 +115,8 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         Articles::findOrFail($id)->delete();
+        Cache::forget('articles:all');
+        Cache::forget('articles:'.$id);
         return redirect('/articles');
     }
 }

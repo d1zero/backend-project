@@ -11,6 +11,8 @@
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "laravel/ui": "^3.4",
+        "pusher/pusher-php-server": "^5.0",
         "umbrellio/laravel-pg-extensions": "^5.2"
     },
     "require-dev": {

@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 @section('title', 'Login')
 @section('content')
-<h3>Регистрация</h3>
+<h3>Войти</h3>
 <form action="/login" method="post">
     @csrf
     <div>

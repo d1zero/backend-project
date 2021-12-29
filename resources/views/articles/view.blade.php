@@ -1,5 +1,8 @@
 @extends('layouts.layout')
 @section('content')
+<div id="app">
+<example-component>
+</example-component>
 <h1>{{$article->name}}</h1>
 <p>{{$article->short_desc}}</p>
 <p>{{$article->dateTest}}</p>

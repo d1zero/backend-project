@@ -8,7 +8,7 @@ use App\Models\odel;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ArticlesPolicy
+class ArticleControllerPolicy
 {
     use HandlesAuthorization;
 
