@@ -114,9 +114,11 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
+        Gate::authorize('delete-article');
         Articles::findOrFail($id)->delete();
         Cache::forget('articles:all');
         Cache::forget('articles:'.$id);
+        Cache::forget('article:comments:'.$id);
         return redirect('/articles');
     }
 }
